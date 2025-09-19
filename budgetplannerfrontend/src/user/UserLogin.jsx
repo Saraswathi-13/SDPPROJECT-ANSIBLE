@@ -1,9 +1,101 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
+import config from '../config'
 
 const UserLogin = () => {
+  const [formData, setFormData] = useState({
+    username: '',
+    password: ''
+  })
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+
+    try {
+      const response = await fetch(`${config.url}/user/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (response.ok) {
+        const user = await response.json()
+        localStorage.setItem('user', JSON.stringify(user))
+        localStorage.setItem('userType', 'user')
+        navigate('/user/dashboard')
+      } else {
+        const errorMessage = await response.text()
+        setError(errorMessage || 'Invalid Username or Password')
+      }
+    } catch (error) {
+      setError('Network error. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
-    <div>
-      
+    <div className="container">
+      <div className="card" style={{ maxWidth: 400, margin: '50px auto' }}>
+        <h2 style={{ textAlign: 'center', marginBottom: 24 }}>User Login</h2>
+        <form onSubmit={handleSubmit}>
+          <div style={{ marginBottom: 16 }}>
+            <label htmlFor="username">Username:</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              required
+              maxLength={50}
+              style={{ width: '100%', marginTop: 4 }}
+            />
+          </div>
+
+          <div style={{ marginBottom: 16 }}>
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              maxLength={50}
+              style={{ width: '100%', marginTop: 4 }}
+            />
+          </div>
+
+          {error && <div style={{ color: 'black', marginBottom: 16, textAlign: 'center' }}>{error}</div>}
+
+          <button 
+            type="submit" 
+            disabled={loading} 
+            style={{ width: '100%', marginBottom: 16 }}
+          >
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
+        </form>
+
+        <div style={{ textAlign: 'center' }}>
+          <p>Don't have an account? <Link to="/user/register">Register here</Link></p>
+        </div>
+      </div>
     </div>
   )
 }

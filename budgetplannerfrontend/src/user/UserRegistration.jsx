@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import config from '../config'
 
-const AdminLogin = () => {
+const UserRegistration = () => {
   const [formData, setFormData] = useState({
     username: '',
-    password: ''
+    password: '',
+    email: ''
   })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -24,7 +25,7 @@ const AdminLogin = () => {
     setLoading(true)
 
     try {
-      const response = await fetch(`${config.url}/admin/login`, {
+      const response = await fetch(`${config.url}/user/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -32,14 +33,13 @@ const AdminLogin = () => {
         body: JSON.stringify(formData),
       })
 
+      const result = await response.text()
+      
       if (response.ok) {
-        const admin = await response.json()
-        localStorage.setItem('admin', JSON.stringify(admin))
-        localStorage.setItem('userType', 'admin')
-        navigate('/admin/dashboard')
+        alert('Registration successful! Please login.')
+        navigate('/user/login')
       } else {
-        const errorMessage = await response.text()
-        setError(errorMessage || 'Invalid credentials')
+        setError(result || 'Registration failed')
       }
     } catch (error) {
       setError('Network error. Please try again.')
@@ -51,7 +51,7 @@ const AdminLogin = () => {
   return (
     <div className="container">
       <div className="card" style={{ maxWidth: 400, margin: '50px auto' }}>
-        <h2 style={{ textAlign: 'center', marginBottom: 24 }}>Admin Login</h2>
+        <h2 style={{ textAlign: 'center', marginBottom: 24 }}>User Registration</h2>
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: 16 }}>
             <label htmlFor="username">Username:</label>
@@ -62,6 +62,21 @@ const AdminLogin = () => {
               value={formData.username}
               onChange={handleChange}
               required
+              maxLength={50}
+              style={{ width: '100%', marginTop: 4 }}
+            />
+          </div>
+
+          <div style={{ marginBottom: 16 }}>
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              maxLength={50}
               style={{ width: '100%', marginTop: 4 }}
             />
           </div>
@@ -75,6 +90,7 @@ const AdminLogin = () => {
               value={formData.password}
               onChange={handleChange}
               required
+              maxLength={50}
               style={{ width: '100%', marginTop: 4 }}
             />
           </div>
@@ -84,14 +100,18 @@ const AdminLogin = () => {
           <button 
             type="submit" 
             disabled={loading} 
-            style={{ width: '100%' }}
+            style={{ width: '100%', marginBottom: 16 }}
           >
-            {loading ? 'Logging in...' : 'Login as Admin'}
+            {loading ? 'Registering...' : 'Register'}
           </button>
         </form>
+
+        <div style={{ textAlign: 'center' }}>
+          <p>Already have an account? <Link to="/user/login">Login here</Link></p>
+        </div>
       </div>
     </div>
   )
 }
 
-export default AdminLogin
+export default UserRegistration
