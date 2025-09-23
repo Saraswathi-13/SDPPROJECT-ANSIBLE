@@ -45,6 +45,11 @@ public class BudgetGoalServiceImpl implements BudgetGoalService {
     }
 
     @Override
+    public List<BudgetGoal> getAllBudgetGoals() {
+        return budgetGoalRepository.findAll();
+    }
+
+    @Override
     public String updateBudgetGoal(BudgetGoal budgetGoal) {
         if (budgetGoal.getId() == null) {
             throw new IllegalArgumentException("Budget Goal ID is required for update");

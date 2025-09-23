@@ -33,6 +33,12 @@ public class BudgetGoalController {
         return ResponseEntity.ok(goals);
     }
 
+    // Admin: get all budget goals (supports both /api/budgetgoal and /api/budgetgoal/all)
+    @GetMapping({"", "/all"})
+    public ResponseEntity<List<BudgetGoal>> getAllBudgetGoals() {
+        return ResponseEntity.ok(budgetGoalService.getAllBudgetGoals());
+    }
+
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateBudgetGoal(@PathVariable Long id, @RequestBody BudgetGoal budgetGoal) {
         try {

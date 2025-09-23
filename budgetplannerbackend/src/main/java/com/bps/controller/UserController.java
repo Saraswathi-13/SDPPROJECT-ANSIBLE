@@ -40,6 +40,25 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+        try {
+            userService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", "error");
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    // Fallback for environments that block DELETE via proxies
+    @PostMapping("/{id}/delete")
+    public ResponseEntity<?> deleteUserViaPost(@PathVariable Long id) {
+        return deleteUser(id);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> loginRequest) {
         String username = loginRequest.get("username");

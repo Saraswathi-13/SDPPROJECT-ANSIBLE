@@ -11,4 +11,5 @@ public interface UserService {
     Optional<User> findByUsername(String username);
     User authenticateUser(String username, String password);
     boolean existsByUsername(String username);
+    void deleteById(Long id);
 }

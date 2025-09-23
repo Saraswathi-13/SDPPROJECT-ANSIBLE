@@ -56,6 +56,15 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsername(username).isPresent();
     }
 
+    @Override
+    public void deleteById(Long id) {
+        Optional<User> userOpt = userRepository.findById(id);
+        if (userOpt.isPresent()) {
+            // Delete managed entity so JPA cascades removals to children
+            userRepository.delete(userOpt.get());
+        }
+    }
+
     // Simple password hashing using SHA-256
     private String hashPassword(String password) {
         try {

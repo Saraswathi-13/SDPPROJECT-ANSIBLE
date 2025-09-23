@@ -2,17 +2,35 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import AdminNavBar from './AdminNavBar'
 import ViewUsers from './ViewUsers'
+import config from '../config'
 
 const AdminHome = () => {
   const [admin, setAdmin] = useState(null)
   const [activeTab, setActiveTab] = useState('dashboard')
   const navigate = useNavigate()
+  const [stats, setStats] = useState({ totalUsers: 0, activeUsers: 0 })
 
   useEffect(() => {
     const adminData = localStorage.getItem('admin')
     if (adminData) {
       setAdmin(JSON.parse(adminData))
     }
+  }, [])
+
+  useEffect(() => {
+    async function loadStats() {
+      try {
+        const usersRes = await fetch(`${config.url}/users`)
+        const users = usersRes.ok ? await usersRes.json() : []
+        setStats({
+          totalUsers: Array.isArray(users) ? users.length : 0,
+          activeUsers: Array.isArray(users) ? users.length : 0
+        })
+      } catch (e) {
+        // keep zeros on error
+      }
+    }
+    loadStats()
   }, [])
 
   const handleLogout = () => {
@@ -36,15 +54,11 @@ const AdminHome = () => {
             <div className="cards-grid">
               <div className="card">
                 <div className="card-title">Total Users</div>
-                <div className="card-value">0</div>
+                <div className="card-value">{stats.totalUsers}</div>
               </div>
               <div className="card">
                 <div className="card-title">Active Users</div>
-                <div className="card-value">0</div>
-              </div>
-              <div className="card">
-                <div className="card-title">Total Budgets</div>
-                <div className="card-value">0</div>
+                <div className="card-value">{stats.activeUsers}</div>
               </div>
               <div className="card">
                 <div className="card-title">System Health</div>

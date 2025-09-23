@@ -29,10 +29,12 @@ const ViewUsers = () => {
   const handleDeleteUser = async (userId) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       try {
-        const response = await fetch(`${config.url}/users/${userId}`, {
-          method: 'DELETE'
-        });
-        
+        let response = await fetch(`${config.url}/users/${userId}`, { method: 'DELETE' });
+        if (!response.ok) {
+          // Fallback: some environments block DELETE; use POST /delete
+          response = await fetch(`${config.url}/users/${userId}/delete`, { method: 'POST' });
+        }
+
         if (response.ok) {
           setUsers(users.filter(user => user.id !== userId));
           alert('User deleted successfully');
