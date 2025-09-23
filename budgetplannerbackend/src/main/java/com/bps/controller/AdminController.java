@@ -34,13 +34,17 @@ public class AdminController {
         return adminService.findAll();
     }
 
-    // ✅ Login endpoint (returns admin JSON without password)
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Admin admin) {
-        Admin existingAdmin = adminService.findByUsername(admin.getUsername());
+        String username = admin.getUsername() != null ? admin.getUsername().trim() : null;
+        String password = admin.getPassword() != null ? admin.getPassword().trim() : null;
 
-        if (existingAdmin != null && existingAdmin.getPassword().equals(admin.getPassword())) {
-            // Don’t expose password to frontend
+        System.out.println("Login attempt user: '" + username + "', password: '" + password + "'");
+
+        Admin existingAdmin = adminService.findByUsername(username);
+        System.out.println("Existing admin from DB: " + existingAdmin);
+
+        if (existingAdmin != null && password != null && password.equals(existingAdmin.getPassword())) {
             existingAdmin.setPassword(null);
             return ResponseEntity.ok(existingAdmin);
         } else {
