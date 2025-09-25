@@ -12,41 +12,31 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/alerts")
 public class AlertController {
+
     @Autowired
     private AlertService alertService;
-
-    @PostMapping
-    public ResponseEntity<Alert> saveAlert(@RequestBody Alert alert) {
-        Alert saved = alertService.saveAlert(alert);
-        return ResponseEntity.ok(saved);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Alert> getAlert(@PathVariable Long id) {
-        Alert alert = alertService.findById(id);
-        return alert != null ? ResponseEntity.ok(alert) : ResponseEntity.notFound().build();
-    }
-
-    @GetMapping
-    public ResponseEntity<List<Alert>> getAllAlerts() {
-        return ResponseEntity.ok(alertService.findAll());
-    }
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Alert>> getAlertsByUser(@PathVariable Long userId) {
         return ResponseEntity.ok(alertService.findByUserId(userId));
     }
 
+    @PostMapping
+    public ResponseEntity<Alert> createAlert(@RequestBody Alert alert) {
+        return ResponseEntity.ok(alertService.saveAlert(alert));
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Alert> updateAlert(@PathVariable Long id, @RequestBody Alert alert) {
-        alert.setId(id);
-        Alert updated = alertService.saveAlert(alert);
-        return ResponseEntity.ok(updated);
+    public ResponseEntity<Alert> updateAlert(@PathVariable Long id, @RequestBody Alert alertDetails) {
+        // This now correctly calls the update service method
+        return ResponseEntity.ok(alertService.updateAlert(id, alertDetails));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteAlert(@PathVariable Long id) {
-        alertService.deleteById(id);
-        return ResponseEntity.ok("Alert deleted successfully");
+    public ResponseEntity<Void> deleteAlert(@PathVariable Long id) {
+        // This now correctly calls the delete service method
+        alertService.deleteAlert(id);
+        // Returns a 204 No Content response, which is the standard for successful deletions
+        return ResponseEntity.noContent().build();
     }
 }

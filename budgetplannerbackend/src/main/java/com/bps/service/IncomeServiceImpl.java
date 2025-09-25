@@ -12,15 +12,11 @@ import java.util.Optional;
 
 @Service
 public class IncomeServiceImpl implements IncomeService {
-
     @Autowired
     private IncomeRepository incomeRepository;
 
     @Override
     public Income saveIncome(Income income) {
-        if (income.getUser() == null) {
-            throw new IllegalArgumentException("User is required for Income");
-        }
         if (income.getDate() == null) {
             income.setDate(LocalDate.now());
         }
@@ -39,35 +35,30 @@ public class IncomeServiceImpl implements IncomeService {
 
     @Override
     public List<Income> findByUserId(Long userId) {
-        // Return all incomes for the user; frontend can filter by month
         return incomeRepository.findByUser_Id(userId);
     }
+    
+    // NEW: Implementation to find by month
+    @Override
+    public List<Income> findByUserIdAndMonth(Long userId, int year, int month) {
+        LocalDate startDate = LocalDate.of(year, month, 1);
+        LocalDate endDate = startDate.with(TemporalAdjusters.lastDayOfMonth());
+        return incomeRepository.findByUser_IdAndDateBetween(userId, startDate, endDate);
+    }
 
-    // NEW: Update
     @Override
     public Income updateIncome(Income income) {
         if (income.getId() == null) {
-            throw new IllegalArgumentException("Income ID is required for update");
+            throw new IllegalArgumentException("Income ID is required for update.");
         }
-        // Fetch existing to preserve associations if not provided (e.g., user)
-        Optional<Income> existingOpt = incomeRepository.findById(income.getId());
-        if (existingOpt.isPresent()) {
-            Income existing = existingOpt.get();
-            if (income.getUser() == null) income.setUser(existing.getUser());
-            if (income.getDate() == null) income.setDate(existing.getDate());
-        }
-        Income updated = incomeRepository.save(income);
-        return updated;
+        return incomeRepository.save(income);
     }
 
-    // NEW: Delete
     @Override
     public void deleteIncome(Long id) {
-        Optional<Income> optional = incomeRepository.findById(id);
-        if (optional.isPresent()) {
-            incomeRepository.deleteById(id);
-        } else {
+        if (!incomeRepository.existsById(id)) {
             throw new IllegalArgumentException("Income not found with id: " + id);
         }
+        incomeRepository.deleteById(id);
     }
 }

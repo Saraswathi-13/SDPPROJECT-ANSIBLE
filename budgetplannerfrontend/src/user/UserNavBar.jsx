@@ -84,8 +84,8 @@ const UserNavBar = ({ onLogout }) => {
         <li><NavLink to="/user/analysis" style={styles.link}>Analysis</NavLink></li>
         <li><NavLink to="/user/monthly-report" style={styles.link}>Monthly Report</NavLink></li>
         <li><NavLink to="/user/alert" style={styles.link}>Alerts</NavLink></li>
-        <li><NavLink to="/user/reports" style={styles.link}>Reports</NavLink></li>
-        <li><NavLink to="/user/notifications" style={styles.link}>Notifications</NavLink></li>
+        {/* <li><NavLink to="/user/reports" style={styles.link}>Reports</NavLink></li> */}
+        {/* <li><NavLink to="/user/notifications" style={styles.link}>Notifications</NavLink></li> */}
         <li>
           <div style={styles.logoutWrapper}>
             <button 
@@ -103,4 +103,4 @@ const UserNavBar = ({ onLogout }) => {
   )
 }
 
-export default UserNavBar
+export default UserNavBar;

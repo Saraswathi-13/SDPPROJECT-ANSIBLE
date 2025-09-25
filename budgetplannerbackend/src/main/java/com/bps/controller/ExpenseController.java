@@ -26,26 +26,29 @@ public class ExpenseController {
         Expense expense = expenseService.findById(id);
         return expense != null ? ResponseEntity.ok(expense) : ResponseEntity.notFound().build();
     }
-
-    @GetMapping
-    public ResponseEntity<List<Expense>> getAllExpenses() {
-        return ResponseEntity.ok(expenseService.findAll());
-    }
-
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Expense>> getExpensesByUser(@PathVariable Long userId) {
+    
+    // UPDATED: This endpoint now gets ALL expenses for a user, ignoring date
+    @GetMapping("/user/{userId}/all")
+    public ResponseEntity<List<Expense>> getAllExpensesByUser(@PathVariable Long userId) {
         return ResponseEntity.ok(expenseService.findByUserId(userId));
     }
+    
+    // UPDATED: This is now the primary endpoint to get expenses by month
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Expense>> getExpensesByUserAndMonth(
+            @PathVariable Long userId,
+            @RequestParam int year,
+            @RequestParam int month) {
+        return ResponseEntity.ok(expenseService.findByUserIdAndMonth(userId, year, month));
+    }
 
-    // NEW: Update expense
     @PutMapping("/{id}")
     public ResponseEntity<Expense> updateExpense(@PathVariable Long id, @RequestBody Expense expense) {
-        expense.setId(id);  // Ensure ID is set
+        expense.setId(id);
         Expense updated = expenseService.updateExpense(expense);
         return ResponseEntity.ok(updated);
     }
 
-    // NEW: Delete expense
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteExpense(@PathVariable Long id) {
         expenseService.deleteExpense(id);

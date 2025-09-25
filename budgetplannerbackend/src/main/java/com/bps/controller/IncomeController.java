@@ -26,26 +26,29 @@ public class IncomeController {
         Income income = incomeService.findById(id);
         return income != null ? ResponseEntity.ok(income) : ResponseEntity.notFound().build();
     }
-
-    @GetMapping
-    public ResponseEntity<List<Income>> getAllIncomes() {
-        return ResponseEntity.ok(incomeService.findAll());
-    }
-
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Income>> getIncomesByUser(@PathVariable Long userId) {
+    
+    // UPDATED: This endpoint now gets ALL incomes for a user, ignoring date
+    @GetMapping("/user/{userId}/all")
+    public ResponseEntity<List<Income>> getAllIncomesByUser(@PathVariable Long userId) {
         return ResponseEntity.ok(incomeService.findByUserId(userId));
     }
+    
+    // UPDATED: This is now the primary endpoint to get incomes by month
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Income>> getIncomesByUserAndMonth(
+            @PathVariable Long userId,
+            @RequestParam int year,
+            @RequestParam int month) {
+        return ResponseEntity.ok(incomeService.findByUserIdAndMonth(userId, year, month));
+    }
 
-    // NEW: Update income
     @PutMapping("/{id}")
     public ResponseEntity<Income> updateIncome(@PathVariable Long id, @RequestBody Income income) {
-        income.setId(id);  // Ensure ID is set
+        income.setId(id);
         Income updated = incomeService.updateIncome(income);
         return ResponseEntity.ok(updated);
     }
 
-    // NEW: Delete income
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteIncome(@PathVariable Long id) {
         incomeService.deleteIncome(id);

@@ -55,4 +55,7 @@ public class Income {
 
     public boolean getIsRecurring() { return isRecurring; }
     public void setIsRecurring(boolean isRecurring) { this.isRecurring = isRecurring; }
+    
+    
+    
 }

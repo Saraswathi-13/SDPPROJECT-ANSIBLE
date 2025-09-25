@@ -8,9 +8,11 @@ public interface ExpenseService {
     Expense findById(Long id);
     List<Expense> findAll();
     List<Expense> findByUserId(Long userId);
-    void checkBudgetGoals(Expense expense);
     
-    // NEW
+    // NEW: Find by specific month
+    List<Expense> findByUserIdAndMonth(Long userId, int year, int month);
+
+    void checkBudgetGoals(Expense expense);
     Expense updateExpense(Expense expense);
     void deleteExpense(Long id);
 }

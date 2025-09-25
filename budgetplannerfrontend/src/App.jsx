@@ -2,6 +2,10 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 
+// NEW: Import the notification container and its required CSS
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 // Main components
 import Home from './main/Home';
 import About from './main/About';
@@ -32,7 +36,8 @@ import ViewUsers from './admin/ViewUsers';
 // Protected Route Component
 const ProtectedRoute = ({ children, userType }) => {
   const storedUserType = localStorage.getItem('userType');
-  const isAuthenticated = localStorage.getItem(userType);
+  // Check for the user object itself for authentication
+  const isAuthenticated = localStorage.getItem(userType); 
   
   if (!isAuthenticated || storedUserType !== userType) {
     return <Navigate to={`/${userType}/login`} replace />;
@@ -43,142 +48,50 @@ const ProtectedRoute = ({ children, userType }) => {
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          {/* Main routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          
-          {/* User routes */}
-          <Route path="/user/login" element={<UserLogin />} />
-          <Route path="/user/register" element={<UserRegistration />} />
-          
-          {/* Protected user routes */}
-          <Route 
-            path="/user/dashboard" 
-            element={
-              <ProtectedRoute userType="user">
-                <Dashboard />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/user/budgets" 
-            element={
-              <ProtectedRoute userType="user">
-                <Budgets />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/user/expense" 
-            element={
-              <ProtectedRoute userType="user">
-                <Expense />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/user/income" 
-            element={
-              <ProtectedRoute userType="user">
-                <Income />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/user/category" 
-            element={
-              <ProtectedRoute userType="user">
-                <Category />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/user/transaction" 
-            element={
-              <ProtectedRoute userType="user">
-                <Transaction />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/user/retailer" 
-            element={
-              <ProtectedRoute userType="user">
-                <Retailer />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/user/analysis" 
-            element={
-              <ProtectedRoute userType="user">
-                <Analysis />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/user/monthly-report" 
-            element={
-              <ProtectedRoute userType="user">
-                <MonthlyReport />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/user/alert" 
-            element={
-              <ProtectedRoute userType="user">
-                <Alert />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/user/reports" 
-            element={
-              <ProtectedRoute userType="user">
-                <Reports />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/user/notifications" 
-            element={
-              <ProtectedRoute userType="user">
-                <Notifications />
-              </ProtectedRoute>
-            } 
-          />
-          
-          {/* Admin routes */}
-          <Route path="/admin/login" element={<AdminLogin />} />
-          
-          {/* Protected admin routes */}
-          <Route 
-            path="/admin/dashboard" 
-            element={
-              <ProtectedRoute userType="admin">
-                <AdminHome />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/admin/users" 
-            element={
-              <ProtectedRoute userType="admin">
-                <ViewUsers />
-              </ProtectedRoute>
-            } 
-          />
-          
-          {/* 404 route */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </div>
-    </Router>
+    <>
+      <Router>
+        <div className="App">
+          <Routes>
+            {/* All of your existing routes go here... */}
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/user/login" element={<UserLogin />} />
+            <Route path="/user/register" element={<UserRegistration />} />
+            <Route path="/user/dashboard" element={<ProtectedRoute userType="user"><Dashboard /></ProtectedRoute>} />
+            <Route path="/user/budgets" element={<ProtectedRoute userType="user"><Budgets /></ProtectedRoute>} />
+            <Route path="/user/expense" element={<ProtectedRoute userType="user"><Expense /></ProtectedRoute>} />
+            <Route path="/user/income" element={<ProtectedRoute userType="user"><Income /></ProtectedRoute>} />
+            <Route path="/user/category" element={<ProtectedRoute userType="user"><Category /></ProtectedRoute>} />
+            <Route path="/user/transaction" element={<ProtectedRoute userType="user"><Transaction /></ProtectedRoute>} />
+            <Route path="/user/retailer" element={<ProtectedRoute userType="user"><Retailer /></ProtectedRoute>} />
+            <Route path="/user/analysis" element={<ProtectedRoute userType="user"><Analysis /></ProtectedRoute>} />
+            <Route path="/user/monthly-report" element={<ProtectedRoute userType="user"><MonthlyReport /></ProtectedRoute>} />
+            <Route path="/user/alert" element={<ProtectedRoute userType="user"><Alert /></ProtectedRoute>} />
+            <Route path="/user/reports" element={<ProtectedRoute userType="user"><Reports /></ProtectedRoute>} />
+            <Route path="/user/notifications" element={<ProtectedRoute userType="user"><Notifications /></ProtectedRoute>} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<ProtectedRoute userType="admin"><AdminHome /></ProtectedRoute>} />
+            <Route path="/admin/users" element={<ProtectedRoute userType="admin"><ViewUsers /></ProtectedRoute>} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
+      </Router>
+      
+      {/* NEW: Add the ToastContainer here, outside the router */}
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+    </>
   );
 }
 
