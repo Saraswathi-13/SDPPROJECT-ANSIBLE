@@ -14,6 +14,7 @@ const Category = () => {
   const [name, setName] = useState('')
 
   // Categories are automatically initialized by backend DataInitializer
+  
 
   useEffect(() => {
     let mounted = true
