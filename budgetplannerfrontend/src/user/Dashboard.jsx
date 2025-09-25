@@ -14,6 +14,7 @@ const Dashboard = () => {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     const loadDashboardData = useCallback(async () => {
+        
         setLoading(true);
         setError('');
         try {
