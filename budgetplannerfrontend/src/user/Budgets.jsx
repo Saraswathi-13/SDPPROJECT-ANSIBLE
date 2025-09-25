@@ -12,6 +12,7 @@ const Budgets = () => {
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
 
+    
     // Form states
     const [targetAmount, setTargetAmount] = useState('');
     const [startDate, setStartDate] = useState('');
