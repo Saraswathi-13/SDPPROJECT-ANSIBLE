@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import config from '../config'
+//import config from '../config'
 
 const UserRegistration = () => {
   const [formData, setFormData] = useState({
@@ -25,7 +25,7 @@ const UserRegistration = () => {
     setLoading(true)
 
     try {
-      const response = await fetch(`${config.url}/api/users/register`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
