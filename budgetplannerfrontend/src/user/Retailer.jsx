@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import UserNavBar from './UserNavBar'
 import { useNavigate } from 'react-router-dom'
-import config from '../config'
+
 
 const Retailer = () => {
   const navigate = useNavigate()
@@ -26,7 +26,7 @@ const Retailer = () => {
         setError('')
         
         // Load retailers
-        const retailersResponse = await fetch(`${config.url}/retailers`, {
+        const retailersResponse = await fetch(`${import.meta.env.VITE_API_URL}/retailers`, {
           headers: {
             'Authorization': `Bearer ${user.id}`,
             'Content-Type': 'application/json'
@@ -38,7 +38,7 @@ const Retailer = () => {
         }
 
         // Load categories
-        const categoriesResponse = await fetch(`${config.url}/categories`, {
+        const categoriesResponse = await fetch(`${import.meta.env.VITE_API_URL}/categories`, {
           headers: {
             'Authorization': `Bearer ${user.id}`,
             'Content-Type': 'application/json'
@@ -62,7 +62,7 @@ const Retailer = () => {
     e.preventDefault()
     setError('')
     try {
-      const response = await fetch(`${config.url}/retailers`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/retailers`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${user.id}`,
@@ -81,7 +81,7 @@ const Retailer = () => {
       setTimeout(() => setSuccessMessage(''), 3000)
       
       // Reload retailers
-      const retailersResponse = await fetch(`${config.url}/retailers`, {
+      const retailersResponse = await fetch(`${import.meta.env.VITE_API_URL}/retailers`, {
         headers: {
           'Authorization': `Bearer ${user.id}`,
           'Content-Type': 'application/json'
@@ -104,7 +104,7 @@ const Retailer = () => {
 
   const updateRetailer = async (retailer) => {
     try {
-      const response = await fetch(`${config.url}/retailers/${retailer.id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/retailers/${retailer.id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${user.id}`,
@@ -117,7 +117,7 @@ const Retailer = () => {
       console.log('Update retailer result:', result)
       
       // Reload retailers
-      const retailersResponse = await fetch(`${config.url}/retailers`, {
+      const retailersResponse = await fetch(`${import.meta.env.VITE_API_URL}/retailers`, {
         headers: {
           'Authorization': `Bearer ${user.id}`,
           'Content-Type': 'application/json'
@@ -134,7 +134,7 @@ const Retailer = () => {
 
   const deleteRetailer = async (retailerId) => {
     try {
-      const response = await fetch(`${config.url}/retailers/${retailerId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/retailers/${retailerId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${user.id}`,
@@ -146,7 +146,7 @@ const Retailer = () => {
       console.log('Delete retailer result:', result)
       
       // Reload retailers
-      const retailersResponse = await fetch(`${config.url}/retailers`, {
+      const retailersResponse = await fetch(`${import.meta.env.VITE_API_URL}/retailers`, {
         headers: {
           'Authorization': `Bearer ${user.id}`,
           'Content-Type': 'application/json'

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import UserNavBar from './UserNavBar'
 import { useNavigate } from 'react-router-dom'
-import config from '../config'
+
 
 const Category = () => {
   const navigate = useNavigate()
@@ -33,7 +33,7 @@ const Category = () => {
           return;
         }
         
-        const response = await fetch(`${config.url}/categories`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/categories`, {
           headers: {
             'Content-Type': 'application/json',
             ...(token && { 'Authorization': `Bearer ${token}` })
@@ -62,7 +62,7 @@ const Category = () => {
       const user = JSON.parse(localStorage.getItem('user') || '{}');
       const token = localStorage.getItem('token') || '';
       
-      const response = await fetch(`${config.url}/categories`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/categories`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ const Category = () => {
       setTimeout(() => setSuccessMessage(''), 3000)
       
       // Reload categories
-      const addCategoriesResponse = await fetch(`${config.url}/categories`, {
+      const addCategoriesResponse = await fetch(`${import.meta.env.VITE_API_URL}/categories`, {
         headers: {
           'Content-Type': 'application/json',
           ...(token && { 'Authorization': `Bearer ${token}` })
@@ -104,7 +104,7 @@ const Category = () => {
       const user = JSON.parse(localStorage.getItem('user') || '{}');
       const token = localStorage.getItem('token') || '';
       
-      const response = await fetch(`${config.url}/categories/${category.id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/categories/${category.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ const Category = () => {
       console.log('Update category result:', result)
       
       // Reload categories
-      const updateCategoriesResponse = await fetch(`${config.url}/categories`, {
+      const updateCategoriesResponse = await fetch(`${import.meta.env.VITE_API_URL}/categories`, {
         headers: {
           'Content-Type': 'application/json',
           ...(token && { 'Authorization': `Bearer ${token}` })
@@ -137,7 +137,7 @@ const Category = () => {
       const user = JSON.parse(localStorage.getItem('user') || '{}');
       const token = localStorage.getItem('token') || '';
       
-      const response = await fetch(`${config.url}/categories/${categoryId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/categories/${categoryId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -149,7 +149,7 @@ const Category = () => {
       console.log('Delete category result:', result)
       
       // Reload categories
-      const deleteCategoriesResponse = await fetch(`${config.url}/categories`, {
+      const deleteCategoriesResponse = await fetch(`${import.meta.env.VITE_API_URL}/categories`, {
         headers: {
           'Content-Type': 'application/json',
           ...(token && { 'Authorization': `Bearer ${token}` })

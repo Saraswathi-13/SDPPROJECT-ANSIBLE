@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import UserNavBar from './UserNavBar';
 import { useNavigate } from 'react-router-dom';
-import config from '../config';
+
 
 const MonthlyReport = () => {
     const navigate = useNavigate();
@@ -45,7 +45,7 @@ const MonthlyReport = () => {
     const handleExport = () => {
         const userId = user.id || user.userId;
         const [year, month] = filterMonth.split('-');
-        const exportUrl = `${config.url}/reports/user/${userId}/export?year=${year}&month=${month}`;
+        const exportUrl = `${import.meta.env.VITE_API_URL}/reports/user/${userId}/export?year=${year}&month=${month}`;
         window.open(exportUrl, '_blank');
     };
 

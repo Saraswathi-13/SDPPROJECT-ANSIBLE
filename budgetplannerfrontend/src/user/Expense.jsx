@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import UserNavBar from './UserNavBar';
 import { useNavigate } from 'react-router-dom';
-import config from '../config';
+
 import { toast } from 'react-toastify';
 
 const Expense = () => {
@@ -109,7 +109,7 @@ const Expense = () => {
                 user: { id: userId }
             };
 
-            const response = await fetch(`${config.url}/expenses`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/expenses`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', ...(token && { 'Authorization': `Bearer ${token}` }) },
                 body: JSON.stringify(expensePayload)
@@ -136,7 +136,7 @@ const Expense = () => {
         if (!window.confirm("Are you sure?")) return;
         try {
             const token = localStorage.getItem('token') || '';
-            const response = await fetch(`${config.url}/expenses/${expenseId}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/expenses/${expenseId}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });

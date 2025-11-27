@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import UserNavBar from './UserNavBar'
 import { useNavigate } from 'react-router-dom'
-import config from '../config'
+
 
 const Alert = () => {
   const navigate = useNavigate()
@@ -23,7 +23,7 @@ const Alert = () => {
       try {
         setLoading(true)
         setError('')
-        const response = await fetch(`${config.url}/alerts/user/${user.id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/alerts/user/${user.id}`, {
           headers: {
             'Authorization': `Bearer ${user.id}`,
             'Content-Type': 'application/json'
@@ -46,7 +46,7 @@ const Alert = () => {
     e.preventDefault()
     setError('')
     try {
-      const response = await fetch(`${config.url}/alerts`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/alerts`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${user.id}`,
@@ -66,7 +66,7 @@ const Alert = () => {
       setTimeout(() => setSuccessMessage(''), 3000)
       
       // Reload alerts
-      const alertsResponse = await fetch(`${config.url}/alerts/user/${user.id}`, {
+      const alertsResponse = await fetch(`${import.meta.env.VITE_API_URL}/alerts/user/${user.id}`, {
         headers: {
           'Authorization': `Bearer ${user.id}`,
           'Content-Type': 'application/json'
@@ -89,7 +89,7 @@ const Alert = () => {
 
   const updateAlert = async (alert) => {
     try {
-      const response = await fetch(`${config.url}/alerts/${alert.id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/alerts/${alert.id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${user.id}`,
@@ -102,7 +102,7 @@ const Alert = () => {
       console.log('Update alert result:', result)
       
       // Reload alerts
-      const alertsResponse = await fetch(`${config.url}/alerts/user/${user.id}`, {
+      const alertsResponse = await fetch(`${import.meta.env.VITE_API_URL}/alerts/user/${user.id}`, {
         headers: {
           'Authorization': `Bearer ${user.id}`,
           'Content-Type': 'application/json'
@@ -119,7 +119,7 @@ const Alert = () => {
 
   const deleteAlert = async (alertId) => {
     try {
-      const response = await fetch(`${config.url}/alerts/${alertId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/alerts/${alertId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${user.id}`,
@@ -131,7 +131,7 @@ const Alert = () => {
       console.log('Delete alert result:', result)
       
       // Reload alerts
-      const alertsResponse = await fetch(`${config.url}/alerts/user/${user.id}`, {
+      const alertsResponse = await fetch(`${import.meta.env.VITE_API_URL}/alerts/user/${user.id}`, {
         headers: {
           'Authorization': `Bearer ${user.id}`,
           'Content-Type': 'application/json'

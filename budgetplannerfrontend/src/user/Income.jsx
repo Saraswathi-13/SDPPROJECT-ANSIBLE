@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import UserNavBar from './UserNavBar';
 import { useNavigate } from 'react-router-dom';
-import config from '../config';
+
 
 const Income = () => {
     const navigate = useNavigate();
@@ -40,10 +40,10 @@ const Income = () => {
 
             let url;
             if (showAll) {
-                url = `${config.url}/incomes/user/${userId}/all`;
+                url = `${import.meta.env.VITE_API_URL}/incomes/user/${userId}/all`;
             } else {
                 const [year, month] = filterMonth.split('-');
-                url = `${config.url}/incomes/user/${userId}?year=${year}&month=${month}`;
+                url = `${import.meta.env.VITE_API_URL}/incomes/user/${userId}?year=${year}&month=${month}`;
             }
 
             const response = await fetch(url, {
@@ -75,7 +75,7 @@ const Income = () => {
             const userId = user.id || user.userId;
             const token = localStorage.getItem('token') || '';
             
-            const response = await fetch(`${config.url}/incomes`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/incomes`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', ...(token && { 'Authorization': `Bearer ${token}` }) },
                 body: JSON.stringify({ 
@@ -132,7 +132,7 @@ const Income = () => {
         if (!window.confirm("Are you sure you want to delete this income record?")) return;
         try {
             const token = localStorage.getItem('token') || '';
-            const response = await fetch(`${config.url}/incomes/${incomeId}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/incomes/${incomeId}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });

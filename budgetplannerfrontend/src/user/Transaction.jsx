@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import UserNavBar from './UserNavBar'
 import { useNavigate } from 'react-router-dom'
-import config from '../config'
+
 
 const Transaction = () => {
   const navigate = useNavigate()
@@ -37,7 +37,7 @@ const Transaction = () => {
         setError('')
         
         // Load transactions for user
-        const transactionsResponse = await fetch(`${config.url}/transactions/user/${user.id}`, {
+        const transactionsResponse = await fetch(`${import.meta.env.VITE_API_URL}/transactions/user/${user.id}`, {
           headers: {
             'Authorization': `Bearer ${user.id}`,
             'Content-Type': 'application/json'
@@ -49,7 +49,7 @@ const Transaction = () => {
         }
 
         // Load categories
-        const categoriesResponse = await fetch(`${config.url}/categories`, {
+        const categoriesResponse = await fetch(`${import.meta.env.VITE_API_URL}/categories`, {
           headers: {
             'Authorization': `Bearer ${user.id}`,
             'Content-Type': 'application/json'
@@ -61,7 +61,7 @@ const Transaction = () => {
         }
 
         // Load retailers
-        const retailersResponse = await fetch(`${config.url}/retailers`, {
+        const retailersResponse = await fetch(`${import.meta.env.VITE_API_URL}/retailers`, {
           headers: {
             'Authorization': `Bearer ${user.id}`,
             'Content-Type': 'application/json'
@@ -85,7 +85,7 @@ const Transaction = () => {
     e.preventDefault()
     setError('')
     try {
-      const response = await fetch(`${config.url}/transactions`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/transactions`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${user.id}`,
@@ -109,7 +109,7 @@ const Transaction = () => {
       setTimeout(() => setSuccessMessage(''), 3000)
       
       // Reload transactions
-      const transactionsResponse = await fetch(`${config.url}/transactions`, {
+      const transactionsResponse = await fetch(`${import.meta.env.VITE_API_URL}/transactions`, {
         headers: {
           'Authorization': `Bearer ${user.id}`,
           'Content-Type': 'application/json'
@@ -136,7 +136,7 @@ const Transaction = () => {
 
   const updateTransaction = async (transaction) => {
     try {
-      const response = await fetch(`${config.url}/transactions/${transaction.id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/transactions/${transaction.id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${user.id}`,
@@ -149,7 +149,7 @@ const Transaction = () => {
       console.log('Update transaction result:', result)
       
       // Reload transactions
-      const transactionsResponse = await fetch(`${config.url}/transactions`, {
+      const transactionsResponse = await fetch(`${import.meta.env.VITE_API_URL}/transactions`, {
         headers: {
           'Authorization': `Bearer ${user.id}`,
           'Content-Type': 'application/json'
@@ -166,7 +166,7 @@ const Transaction = () => {
 
   const deleteTransaction = async (transactionId) => {
     try {
-      const response = await fetch(`${config.url}/transactions/${transactionId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/transactions/${transactionId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${user.id}`,
@@ -178,7 +178,7 @@ const Transaction = () => {
       console.log('Delete transaction result:', result)
       
       // Reload transactions
-      const transactionsResponse = await fetch(`${config.url}/transactions`, {
+      const transactionsResponse = await fetch(`${import.meta.env.VITE_API_URL}/transactions`, {
         headers: {
           'Authorization': `Bearer ${user.id}`,
           'Content-Type': 'application/json'
