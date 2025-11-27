@@ -3,7 +3,7 @@ FROM node:20-alpine AS build
 WORKDIR /app
 
 COPY package*.json ./
-
+COPY .env ./
 RUN npm install
 
 # Ensure vite binary is executable
